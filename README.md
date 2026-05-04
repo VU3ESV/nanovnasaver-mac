@@ -36,6 +36,12 @@ Requires Python 3.10+ at `/opt/homebrew/bin/python3.12` (override with `PYTHON=.
 
 App runs natively on Apple Silicon (no Rosetta).
 
+## TODO
+
+- [ ] **Universal2 build (Intel + Apple Silicon in one bundle).** Requires installing python.org's universal2 Python 3.12 (one-time `sudo installer -pkg`), then rebuilding with the `lipo -thin` step skipped. Result is a single `.app` that runs natively on both architectures. Alternative: separate `arm64` and `x86_64` zips on the release page (build the Intel one with `arch -x86_64` + `lipo -thin x86_64`).
+- [ ] Proper Developer ID codesigning + notarization, so the `xattr` quarantine workaround is no longer needed.
+- [ ] CI: GitHub Actions on `macos-14` (arm64) and `macos-13` (Intel) runners to auto-build on tag push.
+
 ## Why each fix is needed
 
 These are upstream quirks that make a vanilla `pip install` non-functional on macOS:
