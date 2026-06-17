@@ -82,6 +82,12 @@ sed -i '' 's/setFixedWidth(60)/setMinimumWidth(72)/g' "$PKG/Controls/SerialContr
 # Widen the left control column so the two-column Start/Stop|Center/Span forms fit
 sed -i '' 's/self.setMaximumWidth(250)/self.setMaximumWidth(280)/' \
     "$PKG/Controls/Control.py"
+# Marker readout boxes have no trailing stretch, so a taller window inflates the
+# three Marker boxes to fill the column instead of keeping them compact. Add a
+# stretch after the markers so the slack collects below them and the boxes stay
+# at their natural height (upstream left this as a commented-out TODO).
+perl -i -pe 's/^(        scroll2 = QtWidgets\.QScrollArea\(\))$/        self.marker_data_layout.addStretch(1)\n$1/' \
+    "$PKG/NanoVNASaver.py"
 
 # 6. Build launcher
 cat > "$APP/Contents/MacOS/NanoVNASaver" <<'EOF'
